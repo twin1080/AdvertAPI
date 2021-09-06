@@ -2,6 +2,7 @@
 
 namespace AdvertAPI;
 
+use AdvertAPI\Exception\APILogicException;
 use AdvertAPI\Model\Advert;
 use AdvertAPI\Service\AdsService;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -36,7 +37,7 @@ class AdsController
     {
         $relevant = $this->adsService->getMostRelevantAd();
         if (!$relevant) {
-            throw new \LogicException('There are nothing to show', 400);
+            throw new APILogicException('There are nothing to show', 400);
         }
 
         $relevant->setLastShowTime(new \DateTime());
@@ -56,16 +57,16 @@ class AdsController
     private function parseRequest(RequestInterface $request)
     {
         if (!filter_var($request->getParsedBody()['banner'], FILTER_VALIDATE_URL)) {
-            throw new \LogicException('Invalid content in field "banner"', 400);
+            throw new APILogicException('Invalid content in field "banner"', 400);
         }
         if (!is_numeric($request->getParsedBody()['price'])) {
-            throw new \LogicException('Invalid content in field "price"', 400);
+            throw new APILogicException('Invalid content in field "price"', 400);
         }
         if (!filter_var($request->getParsedBody()['limit'], FILTER_VALIDATE_INT)) {
-            throw new \LogicException('Invalid content in field "limit"', 400);
+            throw new APILogicException('Invalid content in field "limit"', 400);
         }
         if (empty($request->getParsedBody()['text'])) {
-            throw new \LogicException('Text field cannot be empty', 400);
+            throw new APILogicException('Text field cannot be empty', 400);
         }
         $advert = new Advert();
         $advert->setBanner($request->getParsedBody()['banner']);

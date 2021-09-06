@@ -10,10 +10,10 @@ use function DI\create;
 
 return [
     AdsService::class => DI\autowire(AdsService::class)
-        ->constructorParameter('databaseName', 'test'),
+        ->constructorParameter(
+            'databaseName',
+            DI\env('ADS_MONGO_DATABASE', 'test')),
     MongoClient::class => create(MongoClient::class)
-        ->constructor('mongodb://0.0.0.0:27017/'),
-
-//    AdsController::class => create(AdsController::class),
-//    ServerRequestInterface::class => ServerRequestFactory::fromGlobals(),
+        ->constructor(
+            DI\env('ADS_MONGO_URL', 'mongodb://localhost:27017/')),
 ];

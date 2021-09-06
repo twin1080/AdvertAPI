@@ -22,4 +22,9 @@ services:
       - 3000:3000
     volumes:
       - .:/var/www/
+    environment:
+      ADS_MONGO_URL: mongodb://root:example@mongo:27017
+      ADS_MONGO_DATABASE: test
     command: php -S="0.0.0.0:3000" -t="/var/www/public"
+    links:
+      - mongo

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AdvertAPI\Service;
 
+use AdvertAPI\Exception\APILogicException;
 use AdvertAPI\Model\Advert;
 use MongoDB\Client as MongoClient;
 use MongoDB\Database;
@@ -59,7 +60,7 @@ class AdsService
         if ($this->database->ads->countDocuments($filter)) {
             $this->database->ads->findOneAndUpdate($filter, ['$set' => $advert]);
         } else {
-            throw new \LogicException('Not found object with id = ' . $advert->getId(), 400);
+            throw new APILogicException('Not found object with id = ' . $advert->getId(), 400);
         }
     }
 }
