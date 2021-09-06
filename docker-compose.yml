@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./mongo/db:/data/db
+      - ./mongo/configdb:/data/configdb
+      - ./mongo/dump:/dump
+    environment:
+#      TZ: ${WORKSPACE_TIMEZONE}
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    command: --storageEngine wiredTiger
+    container_name: mongo
+
+  phpfpm:
+    container_name: phpfpm
+    image: nanoninja/php-fpm
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/var/www/
+    command: php -S="0.0.0.0:3000" -t="/var/www/public"
