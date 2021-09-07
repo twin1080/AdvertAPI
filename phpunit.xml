@@ -1,0 +1,18 @@
+<phpunit bootstrap="vendor/autoload.php"
+         cacheResultFile=".phpunit.cache/test-results">
+    <testsuites>
+        <testsuite name="AdvertAPI">
+            <directory>test</directory>
+        </testsuite>
+    </testsuites>
+    <coverage cacheDirectory=".phpunit.cache/code-coverage"
+              processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
+    <php>
+        <env name="ADS_MONGO_DATABASE" value="autotest" force="true" />
+        <env name="APP_ENV" value="autotest" force="true" />
+    </php>
+</phpunit>

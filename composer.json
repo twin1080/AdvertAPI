@@ -16,7 +16,8 @@
         "php-di/php-di": "^6.3",
         "mongodb/mongodb": "^1.9",
         "middlewares/error-handler": "^3.0",
-        "ext-mongodb": "*"
+        "ext-mongodb": "*",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {

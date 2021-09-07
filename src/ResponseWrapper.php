@@ -17,11 +17,15 @@ class ResponseWrapper implements MiddlewareInterface
     {
         try {
             $response = $handler->handle($request);
-            return $response->withPayload([
-                "message" => "OK",
-                "code" => 200,
-                "data" => $response->getPayload()
-            ]);
+            if ($response instanceof JsonResponse) {
+                return $response->withPayload([
+                    "message" => "OK",
+                    "code" => 200,
+                    "data" => $response->getPayload()
+                ]);
+            } else {
+                return $response;
+            }
         } catch (APILogicException $e) {
             return new JsonResponse([
                 "message" => $e->getMessage(),

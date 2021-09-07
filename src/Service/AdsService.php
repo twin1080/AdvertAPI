@@ -23,14 +23,16 @@ class AdsService
     public function create(Advert $advert) {
         $options =
             [
+                'typeMap' => ['root' => Advert::class],
                 'sort'=> ['id' => -1],
                 'limit' => 1,
                 'projection' => ['id' => 1]
             ];
 
         $id = 1;
+
         foreach ($this->database->ads->find([], $options) as $item) {
-            $id+=$item->id;
+            $id+=$item->getId();
         }
 
         $advert->setId($id);
@@ -41,10 +43,13 @@ class AdsService
     public function getMostRelevantAd()
     {
         $lastShownAdvert = $this->database->ads->findOne(
-            [],
+            ['shownCount' => ['$gt' => 0]],
             ['sort' => ['lastShowTime' => -1]]);
 
-        $filter = ['$where' => 'this.limit > this.shownCount', 'id' => ['$ne' => $lastShownAdvert->getId()]];
+        $filter = ['$where' => 'this.limit > this.shownCount'];
+        if ($lastShownAdvert) {
+            $filter['id'] = ['$ne' => $lastShownAdvert->getId()];
+        }
         $options = ['sort' => ['price' => -1, 'lastShowTime' => 1]];
         foreach($this->database->ads->find($filter, $options) as $relevant) {
             return $relevant;

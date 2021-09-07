@@ -20,6 +20,12 @@ $ /usr/bin/php8.0 -S localhost:8000 -t /public
 $ docker-compose up
 ```
 
+### Запуск функциональных тестов
+Автотесты используют тестовую базу данных с именем autotest (указывается в phpunit.xml) и не могут быть запущены без этого файла конфигурации.
+```shell
+$ php vendor/phpunit/phpunit/phpunit --configuration phpunit.xml
+```
+
 ## Описание протокола
 ### Метод создания объявления /ads
 Добавляет новое объявление.
